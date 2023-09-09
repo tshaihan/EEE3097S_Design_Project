@@ -32,7 +32,7 @@ function main(x, y)
     [sig1, sig2, sig3, sig4] = alignLengths(sig1, sig2, sig3, sig4);
 
     % Synchronize Signals
-    [sig1, sig2, sig3, sig4] = synchronize(calSig, sig1, sig2, sig3, sig4, calToa1, calToa2, calToa3, calToa4);
+    [sig1, sig2, sig3, sig4] = synchronize(calSig, sig1, sig2, sig3, sig4);
     
     % Time Delay Estimation
     tdoa12 = gccphat(sig1, sig2, sampleRate);
@@ -47,7 +47,7 @@ function main(x, y)
 end
 
 %% Synchronization
-function [sig1, sig2, sig3, sig4] = synchronize(calSig, sig1, sig2, sig3, sig4, calToa1, calToa2, calToa3, calToa4)
+function [sig1, sig2, sig3, sig4] = synchronize(calSig, sig1, sig2, sig3, sig4)
     calLen = length(calSig)+1;
     calSig = transpose(calSig);
     calSig(length(sig1)) = 0;
