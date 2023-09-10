@@ -35,10 +35,6 @@ function [coords] = main(x, y)
     % Synchronize Signals
     [sig1, sig2, sig3, sig4] = synchronize(calSig, sig1, sig2, sig3, sig4);
     
-    %Adding noise
-    [sig1,sig2,sig3,sig4] = noisy(sig1,sig2,sig3,sig4); 
-
-
     %Filter signals
     [sig1, sig2, sig3, sig4] = low_pass(sig1, sig2, sig3, sig4);
     
@@ -73,13 +69,14 @@ end
 %% Signal Acquisition
 function sig = generateSignal(srcSig, calSig, srcToa, calToa, sampleRate, syncError)
     duration = syncError + length(calSig) + length(srcSig) + round((srcToa+calToa+2)*sampleRate); 
+    noise = 0.05*rand(size(duration));
     sig = zeros(duration, 1);
     start = syncError + round(calToa*sampleRate);
     stop = start + length(calSig) - 1;
     sig(start:stop) = calSig;
     start = stop + round((srcToa+1)*sampleRate);
     stop = start + length(srcSig) - 1;
-    sig(start:stop) = srcSig;
+    sig(start:stop) = srcSig + noise;
 end
 
 function [sig1, sig2, sig3, sig4] = alignLengths(sig1, sig2, sig3, sig4)
@@ -123,23 +120,12 @@ end
 
 %% Signal Preprocessing
 
-%Add Noise
-function [sig1,sig2,sig3,sig4] = noisy(sig1,sig2,sig3,sig4)
-noise = 0.05*rand(size(sig1));
-sig1 = sig1 + noise;
-sig2 = sig2 + noise;
-sig3 = sig3 + noise;
-sig4 = sig4 + noise;
-end
-
 %Filter signal
 function [sig1, sig2, sig3, sig4] = low_pass(sig1, sig2, sig3, sig4)
     sig1 = lowpass(sig1,10,0.5*48000);
     sig2 = lowpass(sig2,10,0.5*48000);
     sig3 = lowpass(sig3,10,0.5*48000);
     sig4 = lowpass(sig4,10,0.5*48000);
-    
-
-
+   
    
 end
