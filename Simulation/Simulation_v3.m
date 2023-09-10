@@ -76,7 +76,7 @@ function sig = generateSignal(srcSig, calSig, srcToa, calToa, sampleRate, syncEr
     sig(start:stop) = calSig;
     start = stop + round((srcToa+1)*sampleRate);
     stop = start + length(srcSig) - 1;
-    sig(start:stop) = srcSig + noise;
+    sig(start:stop) = srcSig + noise; %adding noise to the signal
 end
 
 function [sig1, sig2, sig3, sig4] = alignLengths(sig1, sig2, sig3, sig4)
