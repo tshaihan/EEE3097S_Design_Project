@@ -1,5 +1,5 @@
 %% main function
-function main(x, y)
+function [coords] = main(x, y)
     c = 343;
     sampleRate = 48000;
     
@@ -30,9 +30,17 @@ function main(x, y)
     sig3 = generateSignal(srcSig, calSig, srcToa3, calToa3, sampleRate, syncError(2));
     sig4 = generateSignal(srcSig, calSig, srcToa4, calToa4, sampleRate, syncError(2));
     [sig1, sig2, sig3, sig4] = alignLengths(sig1, sig2, sig3, sig4);
+   
 
     % Synchronize Signals
     [sig1, sig2, sig3, sig4] = synchronize(calSig, sig1, sig2, sig3, sig4);
+    
+    %Adding noise
+    [sig1,sig2,sig3,sig4] = noisy(sig1,sig2,sig3,sig4); 
+
+
+    %Filter signals
+    [sig1, sig2, sig3, sig4] = low_pass(sig1, sig2, sig3, sig4);
     
     % Time Delay Estimation
     tdoa12 = gccphat(sig1, sig2, sampleRate);
@@ -109,4 +117,29 @@ function ydata = func(x, xdata)
     d13 = sqrt((xdata(1)-x(1))^2+(xdata(2)-x(2))^2)-sqrt((xdata(5)-x(1))^2+(xdata(6)-x(2))^2);
     d14 = sqrt((xdata(1)-x(1))^2+(xdata(2)-x(2))^2)-sqrt((xdata(7)-x(1))^2+(xdata(8)-x(2))^2);
     ydata = [d12, d13, d14];
+end
+
+
+
+%% Signal Preprocessing
+
+%Add Noise
+function [sig1,sig2,sig3,sig4] = noisy(sig1,sig2,sig3,sig4)
+noise = 0.05*rand(size(sig1));
+sig1 = sig1 + noise;
+sig2 = sig2 + noise;
+sig3 = sig3 + noise;
+sig4 = sig4 + noise;
+end
+
+%Filter signal
+function [sig1, sig2, sig3, sig4] = low_pass(sig1, sig2, sig3, sig4)
+    sig1 = lowpass(sig1,10,0.5*48000);
+    sig2 = lowpass(sig2,10,0.5*48000);
+    sig3 = lowpass(sig3,10,0.5*48000);
+    sig4 = lowpass(sig4,10,0.5*48000);
+    
+
+
+   
 end
