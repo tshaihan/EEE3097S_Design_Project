@@ -74,7 +74,7 @@ classdef app1 < matlab.apps.AppBase
                 plot(app.UIAxes, x_s*1.25, y_s*2,'*')
                 hold(app.UIAxes, 'on');
     
-                coords = main(x_s,y_s);
+                coords = simulation(x_s,y_s);
     
                 plot(app.UIAxes,coords(1)*1.25,coords(2)*2,"-s")
                 hold(app.UIAxes,'on')

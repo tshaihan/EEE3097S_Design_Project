@@ -1,6 +1,7 @@
-# How to run the simulation:
+# Simulation
 
-## Folders:
-* GUI.m
-* main.m
-* MATLAB App 2023-09-10 20-53-55.mp4 (which is a video of the simulation being run, for reference)
+## Files:
+* simulation.m - runs the simulation
+* GUI.m - contains the simulation GUI
+* test.m - used to test the simulation
+* results.csv - output data of the tests run by test.m
