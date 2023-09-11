@@ -63,14 +63,11 @@ function [estimatedCoords] = main(x, y, varargin)
     srcSig = cos(2*pi*srcFreq*t.^2);
     calSig = cos(2*pi*calFreq*t.^2);
     delay = round(rand(1, 2).*sampleRate*syncError);
-    sig1 = generateSignal(srcSig, calSig, srcToa1, calToa1, sampleRate, delay(1));
-    sig2 = generateSignal(srcSig, calSig, srcToa2, calToa2, sampleRate, delay(1));
-    sig3 = generateSignal(srcSig, calSig, srcToa3, calToa3, sampleRate, delay(2));
-    sig4 = generateSignal(srcSig, calSig, srcToa4, calToa4, sampleRate, delay(2));
+    sig1 = generateSignal(srcSig, calSig, srcToa1, calToa1, sampleRate, delay(1),snr);
+    sig2 = generateSignal(srcSig, calSig, srcToa2, calToa2, sampleRate, delay(1),snr);
+    sig3 = generateSignal(srcSig, calSig, srcToa3, calToa3, sampleRate, delay(2),snr);
+    sig4 = generateSignal(srcSig, calSig, srcToa4, calToa4, sampleRate, delay(2),snr);
     [sig1, sig2, sig3, sig4] = alignLengths(sig1, sig2, sig3, sig4);
-
-    % Add noise to signals
-    [sig1, sig2, sig3, sig4] = addNoise(sig1, sig2, sig3, sig4, snr);
 
     % Lowpass filter signals
     [sig1, sig2, sig3, sig4] = lowpassFilter(sig1, sig2, sig3, sig4, passFreq, sampleRate);
@@ -96,7 +93,7 @@ end
 
 %% Signal Acquisition
 % Generates signal with calibration and source signals
-function sig = generateSignal(srcSig, calSig, srcToa, calToa, sampleRate, syncError)
+function sig = generateSignal(srcSig, calSig, srcToa, calToa, sampleRate, syncError, snr)
     duration = syncError + length(calSig) + length(srcSig) + round((srcToa+calToa+2)*sampleRate); 
     sig = zeros(duration, 1);
     start = syncError + round(calToa*sampleRate);
@@ -105,14 +102,7 @@ function sig = generateSignal(srcSig, calSig, srcToa, calToa, sampleRate, syncEr
     start = stop + round((srcToa+1)*sampleRate);
     stop = start + length(srcSig) - 1;
     sig(start:stop) = srcSig;
-end
-
-% Adds Gaussian white noise to signals
-function [sig1,sig2,sig3,sig4] = addNoise(sig1, sig2, sig3, sig4, snr)
-    sig1 = awgn(sig1, snr, pow2db(bandpower(sig1)));
-    sig2 = awgn(sig2, snr, pow2db(bandpower(sig2)));
-    sig3 = awgn(sig3, snr, pow2db(bandpower(sig3)));
-    sig4 = awgn(sig4, snr, pow2db(bandpower(sig4)));
+    sig = awgn(sig, snr, pow2db(bandpower(sig))); % Adds Gaussian white noise to signals
 end
 
 % Applies a lowpass filter to signals
