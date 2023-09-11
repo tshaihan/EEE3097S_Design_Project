@@ -35,16 +35,16 @@ classdef app1 < matlab.apps.AppBase
     methods (Access = private)
         
         function Initialise_Mics(app)
-        plot(app.UIAxes,app.m1_x*1.25,app.m1_y*2, 'o')
+        plot(app.UIAxes,app.m1_x*1.25,app.m1_y*2, 'o', 'Color','r')
         hold(app.UIAxes, 'on');
 
-        plot(app.UIAxes,app.m2_x*1.25,app.m2_y*2, 'o')
+        plot(app.UIAxes,app.m2_x*1.25,app.m2_y*2, 'o', 'Color','r')
         hold(app.UIAxes, 'on');
 
-        plot(app.UIAxes,app.m3_x*1.25,app.m3_y*2, 'o')
+        plot(app.UIAxes,app.m3_x*1.25,app.m3_y*2, 'o', 'Color','b')
         hold(app.UIAxes, 'on');
 
-        plot(app.UIAxes,app.m4_x*1.25,app.m4_y*2, 'o')
+        plot(app.UIAxes,app.m4_x*1.25,app.m4_y*2, 'o', 'Color','b')
         hold(app.UIAxes, 'on');
             
         end
@@ -59,7 +59,7 @@ classdef app1 < matlab.apps.AppBase
             Initialise_Mics(app); 
             plot(app.UIAxes,0.5,0.5,"*")
             hold(app.UIAxes,"on")
-            text(app.UIAxes,0.5,0.5,'Calibration Signal')
+            text(app.UIAxes,0.52,0.5,'CS','fontsize' , 10)
             hold(app.UIAxes,"on")
         end
 
@@ -74,7 +74,7 @@ classdef app1 < matlab.apps.AppBase
                 plot(app.UIAxes, x_s*1.25, y_s*2,'*')
                 hold(app.UIAxes, 'on');
     
-                coords = Simulation_v3(x_s,y_s);
+                coords = main(x_s,y_s);
     
                 plot(app.UIAxes,coords(1)*1.25,coords(2)*2,"-s")
                 hold(app.UIAxes,'on')
