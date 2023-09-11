@@ -13,7 +13,7 @@ function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, vararg
     addOptional(p, 'delayFactor', 0.01);    % error factor of signal synchronization in s
     addOptional(p, 'calPosError', 0.005);   % error factor of calibration signal position in m
     addOptional(p, 'micPosError', 0.005);   % error factor of mic position in m
-    addOptional(p, 'srcFreq', 100);        % max frequency of source chirp signal in Hz
+    addOptional(p, 'srcFreq', 100);         % max frequency of source chirp signal in Hz
     addOptional(p, 'calFreq', 1000);        % max frequency of calibration chirp signal in Hz
     addOptional(p, 'c', 343);               % speed of sound in m/s
     addOptional(p, 'grid', [0.8, 0.5]);     % grid dimensions in m
