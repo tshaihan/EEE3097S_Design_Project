@@ -306,7 +306,7 @@ classdef GUI < matlab.apps.AppBase
             % Create PassbandfreqEditField
             app.PassbandfreqEditField = uieditfield(app.EditTab, 'numeric');
             app.PassbandfreqEditField.Position = [120 199 100 22];
-            app.PassbandfreqEditField.Value = 15000;
+            app.PassbandfreqEditField.Value = 10000;
 
             % Create CalposerrorEditFieldLabel
             app.CalposerrorEditFieldLabel = uilabel(app.EditTab);

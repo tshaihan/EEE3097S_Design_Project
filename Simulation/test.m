@@ -24,8 +24,8 @@ function test
     
     fprintf(fileID, 'Cutoff Frequency\n');
     fprintf(fileID, 'x; y; x estimate; y estimate; sync error; TDOA error; position error; cutoff frequeny\n');
-    cutoff = 5000;
-    for i = 1:16
+    cutoff = 3000;
+    for i = 1:18
         [coords, syncError, tdoaError, coordError] = simulation(0.5, 0.25, 65, 48000, cutoff);
         fprintf(fileID, '0.5; 0.25; %f; %f;', coords(1), coords(2));
         posError = sqrt(coordError(1)^2+coordError(2)^2);
