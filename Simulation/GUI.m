@@ -1,4 +1,4 @@
-classdef app1 < matlab.apps.AppBase
+classdef GUI < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
@@ -117,12 +117,12 @@ classdef app1 < matlab.apps.AppBase
                 plot(app.UIAxes, x_s*1.25, y_s*2,'*')
                 hold(app.UIAxes, 'on');
     
-                coords = main(x_s,y_s, c, srcFreq, calFreq, samplerate, snr, pbfreq, [x_s/2, y_s/2], [0, 0], [0, 0.5], [0.8, 0], [0.8, 0.5], calposerror, micposerror, syncerror);
+                coords = simulation(x_s,y_s, snr, samplerate, pbfreq, syncerror,  calposerror, micposerror, srcFreq, calFreq, c, [x_s, y_s], [x_s/2, y_s/2], [0, 0], [0, 0.5], [0.8, 0], [0.8, 0.5]);
     
                 plot(app.UIAxes,coords(1)*1.25,coords(2)*2,"-s")
                 hold(app.UIAxes,'on')
                     
-                lgd = legend(app.UIAxes,{'Mic 1', 'Mic 2', 'Mic 3', 'Mic 4', 'Calibration Signal', 'Actual Position', 'Predicted Position'}, 'Location', 'southeastoutside');
+                lgd = legend(app.UIAxes,{'Mic 1', 'Mic 2', 'Mic 3', 'Mic 4', 'Calibration Signal', 'Actual Position', 'Estimated Position'}, 'Location', 'southeastoutside');
                 title(lgd, "Legend")
 
                 app.Label.Text = string(coords(1));
@@ -158,9 +158,9 @@ classdef app1 < matlab.apps.AppBase
             % Create UIAxes
             app.UIAxes = uiaxes(app.SimulateTab);
             title(app.UIAxes, 'A1 Grid')
-            xlabel(app.UIAxes, 'X')
-            ylabel(app.UIAxes, 'Y')
-            zlabel(app.UIAxes, 'Z')
+            xlabel(app.UIAxes, 'x')
+            ylabel(app.UIAxes, 'y')
+            zlabel(app.UIAxes, 'z')
             app.UIAxes.XTick = [0 0.125 0.25 0.375 0.5 0.625 0.75 0.875 1];
             app.UIAxes.XTickLabelRotation = 0;
             app.UIAxes.XTickLabel = {'0'; '0.1'; '0.2'; '0.3'; '0.4'; '0.5'; '0.6'; '0.7'; '0.8'};
@@ -175,12 +175,12 @@ classdef app1 < matlab.apps.AppBase
             % Create Y_PredictedLabel
             app.Y_PredictedLabel = uilabel(app.SimulateTab);
             app.Y_PredictedLabel.Position = [35 213 70 22];
-            app.Y_PredictedLabel.Text = 'Y_Predicted';
+            app.Y_PredictedLabel.Text = 'y estimate';
 
             % Create X_PredictedLabel
             app.X_PredictedLabel = uilabel(app.SimulateTab);
             app.X_PredictedLabel.Position = [35 246 70 22];
-            app.X_PredictedLabel.Text = 'X_Predicted';
+            app.X_PredictedLabel.Text = 'x estimate';
 
             % Create Label_2
             app.Label_2 = uilabel(app.SimulateTab);
@@ -202,7 +202,7 @@ classdef app1 < matlab.apps.AppBase
             app.XCoordinateEditFieldLabel = uilabel(app.SimulateTab);
             app.XCoordinateEditFieldLabel.HorizontalAlignment = 'right';
             app.XCoordinateEditFieldLabel.Position = [26 392 76 22];
-            app.XCoordinateEditFieldLabel.Text = 'X-Coordinate';
+            app.XCoordinateEditFieldLabel.Text = 'x coordinate';
 
             % Create XCoordinateEditField
             app.XCoordinateEditField = uieditfield(app.SimulateTab, 'numeric');
@@ -212,7 +212,7 @@ classdef app1 < matlab.apps.AppBase
             app.YCoordinateEditFieldLabel = uilabel(app.SimulateTab);
             app.YCoordinateEditFieldLabel.HorizontalAlignment = 'right';
             app.YCoordinateEditFieldLabel.Position = [27 352 75 22];
-            app.YCoordinateEditFieldLabel.Text = 'Y-Coordinate';
+            app.YCoordinateEditFieldLabel.Text = 'y coordinate';
 
             % Create YCoordinateEditField
             app.YCoordinateEditField = uieditfield(app.SimulateTab, 'numeric');
@@ -240,13 +240,13 @@ classdef app1 < matlab.apps.AppBase
             app.OptionalparametersLabel.FontSize = 18;
             app.OptionalparametersLabel.FontWeight = 'bold';
             app.OptionalparametersLabel.Position = [16 391 180 41];
-            app.OptionalparametersLabel.Text = 'Optional parameters';
+            app.OptionalparametersLabel.Text = 'Simulation Parameters';
 
             % Create SpeedofsoundEditFieldLabel
             app.SpeedofsoundEditFieldLabel = uilabel(app.EditTab);
             app.SpeedofsoundEditFieldLabel.HorizontalAlignment = 'right';
             app.SpeedofsoundEditFieldLabel.Position = [16 361 89 22];
-            app.SpeedofsoundEditFieldLabel.Text = 'Speed of sound';
+            app.SpeedofsoundEditFieldLabel.Text = 'Speed of Sound (m/s)';
 
             % Create SpeedofsoundEditField
             app.SpeedofsoundEditField = uieditfield(app.EditTab, 'numeric');
@@ -257,7 +257,7 @@ classdef app1 < matlab.apps.AppBase
             app.MaxsrcfreqEditFieldLabel = uilabel(app.EditTab);
             app.MaxsrcfreqEditFieldLabel.HorizontalAlignment = 'right';
             app.MaxsrcfreqEditFieldLabel.Position = [34 331 71 22];
-            app.MaxsrcfreqEditFieldLabel.Text = 'Max src freq';
+            app.MaxsrcfreqEditFieldLabel.Text = 'Maximum Source Frequency (Hz)';
 
             % Create MaxsrcfreqEditField
             app.MaxsrcfreqEditField = uieditfield(app.EditTab, 'numeric');
@@ -268,7 +268,7 @@ classdef app1 < matlab.apps.AppBase
             app.MaxcalfreqEditFieldLabel = uilabel(app.EditTab);
             app.MaxcalfreqEditFieldLabel.HorizontalAlignment = 'right';
             app.MaxcalfreqEditFieldLabel.Position = [35 299 70 22];
-            app.MaxcalfreqEditFieldLabel.Text = 'Max cal freq';
+            app.MaxcalfreqEditFieldLabel.Text = 'Maximum Calibration Frequency (Hz)';
 
             % Create MaxcalfreqEditField
             app.MaxcalfreqEditField = uieditfield(app.EditTab, 'numeric');
@@ -279,7 +279,7 @@ classdef app1 < matlab.apps.AppBase
             app.SamplerateEditFieldLabel = uilabel(app.EditTab);
             app.SamplerateEditFieldLabel.HorizontalAlignment = 'right';
             app.SamplerateEditFieldLabel.Position = [35 266 70 22];
-            app.SamplerateEditFieldLabel.Text = 'Sample rate';
+            app.SamplerateEditFieldLabel.Text = 'Sample Rate (Hz)';
 
             % Create SamplerateEditField
             app.SamplerateEditField = uieditfield(app.EditTab, 'numeric');
@@ -301,7 +301,7 @@ classdef app1 < matlab.apps.AppBase
             app.PassbandfreqEditFieldLabel = uilabel(app.EditTab);
             app.PassbandfreqEditFieldLabel.HorizontalAlignment = 'right';
             app.PassbandfreqEditFieldLabel.Position = [23 199 82 22];
-            app.PassbandfreqEditFieldLabel.Text = 'Passband freq';
+            app.PassbandfreqEditFieldLabel.Text = 'Filter Cuttoff Frequency (Hz)';
 
             % Create PassbandfreqEditField
             app.PassbandfreqEditField = uieditfield(app.EditTab, 'numeric');
@@ -312,7 +312,7 @@ classdef app1 < matlab.apps.AppBase
             app.CalposerrorEditFieldLabel = uilabel(app.EditTab);
             app.CalposerrorEditFieldLabel.HorizontalAlignment = 'right';
             app.CalposerrorEditFieldLabel.Position = [31 163 74 22];
-            app.CalposerrorEditFieldLabel.Text = 'Cal pos error';
+            app.CalposerrorEditFieldLabel.Text = 'Calibration Position Error Factor (m)';
 
             % Create CalposerrorEditField
             app.CalposerrorEditField = uieditfield(app.EditTab, 'numeric');
@@ -323,7 +323,7 @@ classdef app1 < matlab.apps.AppBase
             app.MicposerrorEditFieldLabel = uilabel(app.EditTab);
             app.MicposerrorEditFieldLabel.HorizontalAlignment = 'right';
             app.MicposerrorEditFieldLabel.Position = [29 129 75 22];
-            app.MicposerrorEditFieldLabel.Text = 'Mic pos error';
+            app.MicposerrorEditFieldLabel.Text = 'Mic Position Error Factor (m)';
 
             % Create MicposerrorEditField
             app.MicposerrorEditField = uieditfield(app.EditTab, 'numeric');
@@ -334,7 +334,7 @@ classdef app1 < matlab.apps.AppBase
             app.SyncerrorEditFieldLabel = uilabel(app.EditTab);
             app.SyncerrorEditFieldLabel.HorizontalAlignment = 'right';
             app.SyncerrorEditFieldLabel.Position = [45 96 60 22];
-            app.SyncerrorEditFieldLabel.Text = 'Sync error';
+            app.SyncerrorEditFieldLabel.Text = 'Latency (s)';
 
             % Create SyncerrorEditField
             app.SyncerrorEditField = uieditfield(app.EditTab, 'numeric');
@@ -380,7 +380,7 @@ classdef app1 < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = app1
+        function app = GUI
 
             % Create UIFigure and components
             createComponents(app)

@@ -1,27 +1,27 @@
 %% main function
 function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, varargin)
-    p = inputParser
+    p = inputParser;
     
     % Required parameters
     addRequired(p, 'x');                    % x coordinate of source signal
     addRequired(p, 'y');                    % y coordinate of source signal
     
     % Optional parameters
-    addOptional(p, 'snr', 65);              % signal SNR in dBW
-    addOptional(p, 'sampleRate', 48000);    % signal sample rate in Hz
-    addOptional(p, 'cutoffFreq', 15000);    % cutoff frequency of lp filter in Hz
-    addOptional(p, 'delayFactor', 0.01);    % error factor of signal synchronization in s
-    addOptional(p, 'calPosError', 0.005);   % error factor of calibration signal position in m
-    addOptional(p, 'micPosError', 0.005);   % error factor of mic position in m
-    addOptional(p, 'srcFreq', 100);         % max frequency of source chirp signal in Hz
-    addOptional(p, 'calFreq', 1000);        % max frequency of calibration chirp signal in Hz
-    addOptional(p, 'c', 343);               % speed of sound in m/s
-    addOptional(p, 'grid', [0.8, 0.5]);     % grid dimensions in m
-    addOptional(p, 'cal', [0.4, 0.25])      % position of calibration signal in m
-    addOptional(p, 'mic1', [0, 0]);         % position of mic 1 in m
-    addOptional(p, 'mic2', [0, 0.5]);       % position of mic 2 in m
-    addOptional(p, 'mic3', [0.8, 0]);       % position of mic 3 in m
-    addOptional(p, 'mic4', [0.8, 0.5]);     % position of mic 4 in m
+    addOptional(p, 'snr', 65);              % signal SNR (dBW)
+    addOptional(p, 'sampleRate', 48000);    % signal sample rate (Hz)
+    addOptional(p, 'cutoffFreq', 15000);    % cutoff frequency of lp filter (Hz)
+    addOptional(p, 'latency', 0.01);        % delay due to signal desync (s)
+    addOptional(p, 'calPosError', 0.005);   % error factor of calibration signal position (m)
+    addOptional(p, 'micPosError', 0.005);   % error factor of mic position (m)
+    addOptional(p, 'srcFreq', 100);         % max frequency of source chirp signal (Hz)
+    addOptional(p, 'calFreq', 1000);        % max frequency of calibration chirp signal (Hz)
+    addOptional(p, 'c', 343);               % speed of sound (m/s)
+    addOptional(p, 'grid', [0.8, 0.5]);     % grid dimensions (m)
+    addOptional(p, 'cal', [0.4, 0.25])      % position of calibration signal (m)
+    addOptional(p, 'mic1', [0, 0]);         % position of mic 1 (m)
+    addOptional(p, 'mic2', [0, 0.5]);       % position of mic 2 (m)
+    addOptional(p, 'mic3', [0.8, 0]);       % position of mic 3 (m)
+    addOptional(p, 'mic4', [0.8, 0.5]);     % position of mic 4 (m)
     
     % Assign input parameters
     parse(p, x, y, varargin{:});
@@ -30,7 +30,7 @@ function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, vararg
     snr = p.Results.snr;
     sampleRate = p.Results.sampleRate;
     cutoffFreq = p.Results.cutoffFreq;
-    delayFactor = p.Results.delayFactor;
+    latency = p.Results.latency;
     calPosError = p.Results.calPosError;
     micPosError = p.Results.micPosError;
     srcFreq = p.Results.srcFreq;
@@ -64,11 +64,11 @@ function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, vararg
     t = linspace(0, 5, 5*sampleRate); % 5 second signals
     srcSig = cos(2*pi*srcFreq/10*t.^2); % 0-srcFreq Hz chirp
     calSig = cos(2*pi*calFreq/10*t.^2); % 0-calFreq Hz chirp
-    delays = round(rand(1, 2).*sampleRate*delayFactor); % Delay due to desync
-    sig1 = generateSignal(srcSig, calSig, srcToa1, calToa1, sampleRate, delays(1), snr);
-    sig2 = generateSignal(srcSig, calSig, srcToa2, calToa2, sampleRate, delays(1), snr);
-    sig3 = generateSignal(srcSig, calSig, srcToa3, calToa3, sampleRate, delays(2), snr);
-    sig4 = generateSignal(srcSig, calSig, srcToa4, calToa4, sampleRate, delays(2), snr);
+    delay = round(sampleRate*latency); % Delay due to desync
+    sig1 = generateSignal(srcSig, calSig, srcToa1, calToa1, sampleRate, 0, snr);
+    sig2 = generateSignal(srcSig, calSig, srcToa2, calToa2, sampleRate, 0, snr);
+    sig3 = generateSignal(srcSig, calSig, srcToa3, calToa3, sampleRate, delay, snr);
+    sig4 = generateSignal(srcSig, calSig, srcToa4, calToa4, sampleRate, delay, snr);
     [sig1, sig2, sig3, sig4] = alignLengths(sig1, sig2, sig3, sig4);
 
     % Lowpass filter signals
@@ -85,7 +85,7 @@ function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, vararg
     estCoords = round(estCoords, 3);
 
     % Calculate Errors
-    delaysTdoa = (delays(1)-[delays(1), delays(2), delays(2)])/sampleRate;
+    delaysTdoa = [0, -delay, -delay]/sampleRate;
     estDelaysTdoa = (estDelays(1)-[estDelays(2), estDelays(3), estDelays(4)])/sampleRate;
     syncError = delaysTdoa - estDelaysTdoa;
     tdoaError = [(srcToa1-srcToa2)-tdoa12, (srcToa1-srcToa3)-tdoa13, (srcToa1-srcToa4)-tdoa14];
