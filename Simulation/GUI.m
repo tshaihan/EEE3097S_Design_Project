@@ -2,46 +2,47 @@ classdef GUI < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
-        UIFigure                    matlab.ui.Figure
-        MDSHAIHANISLAMLabel         matlab.ui.control.Label
-        TILALMUKHTARLabel           matlab.ui.control.Label
-        AIMEESIMONSLabel            matlab.ui.control.Label
-        GROUP2Label                 matlab.ui.control.Label
-        EEE3097SSIMULATIONLabel     matlab.ui.control.Label
-        TabGroup                    matlab.ui.container.TabGroup
-        SimulateTab                 matlab.ui.container.Tab
-        HelptextTextArea            matlab.ui.control.TextArea
-        HelpButton                  matlab.ui.control.Button
-        YCoordinateEditField        matlab.ui.control.NumericEditField
-        YCoordinateEditFieldLabel   matlab.ui.control.Label
-        XCoordinateEditField        matlab.ui.control.NumericEditField
-        XCoordinateEditFieldLabel   matlab.ui.control.Label
-        FindSoundSourceButton       matlab.ui.control.Button
-        Label                       matlab.ui.control.Label
-        Label_2                     matlab.ui.control.Label
-        X_PredictedLabel            matlab.ui.control.Label
-        Y_PredictedLabel            matlab.ui.control.Label
-        UIAxes                      matlab.ui.control.UIAxes
-        EditTab                     matlab.ui.container.Tab
-        SyncerrorEditField          matlab.ui.control.NumericEditField
-        SyncerrorEditFieldLabel     matlab.ui.control.Label
-        MicposerrorEditField        matlab.ui.control.NumericEditField
-        MicposerrorEditFieldLabel   matlab.ui.control.Label
-        CalposerrorEditField        matlab.ui.control.NumericEditField
-        CalposerrorEditFieldLabel   matlab.ui.control.Label
-        PassbandfreqEditField       matlab.ui.control.NumericEditField
-        PassbandfreqEditFieldLabel  matlab.ui.control.Label
-        SNREditField                matlab.ui.control.NumericEditField
-        SNREditFieldLabel           matlab.ui.control.Label
-        SamplerateEditField         matlab.ui.control.NumericEditField
-        SamplerateEditFieldLabel    matlab.ui.control.Label
-        MaxcalfreqEditField         matlab.ui.control.NumericEditField
-        MaxcalfreqEditFieldLabel    matlab.ui.control.Label
-        MaxsrcfreqEditField         matlab.ui.control.NumericEditField
-        MaxsrcfreqEditFieldLabel    matlab.ui.control.Label
-        SpeedofsoundEditField       matlab.ui.control.NumericEditField
-        SpeedofsoundEditFieldLabel  matlab.ui.control.Label
-        OptionalparametersLabel     matlab.ui.control.Label
+        UIFigure                        matlab.ui.Figure
+        MDSHAIHANISLAMLabel             matlab.ui.control.Label
+        TILALMUKHTARLabel               matlab.ui.control.Label
+        AIMEESIMONSLabel                matlab.ui.control.Label
+        GROUP2Label                     matlab.ui.control.Label
+        EEE3097SSIMULATIONLabel         matlab.ui.control.Label
+        TabGroup                        matlab.ui.container.TabGroup
+        SimulateTab                     matlab.ui.container.Tab
+        ResetGridButton                 matlab.ui.control.Button
+        HelptextTextArea                matlab.ui.control.TextArea
+        HelpButton                      matlab.ui.control.Button
+        YCoordinateEditField            matlab.ui.control.NumericEditField
+        YCoordinateEditFieldLabel       matlab.ui.control.Label
+        XCoordinateEditField            matlab.ui.control.NumericEditField
+        XCoordinateEditFieldLabel       matlab.ui.control.Label
+        FindSoundSourceButton           matlab.ui.control.Button
+        Label                           matlab.ui.control.Label
+        Label_2                         matlab.ui.control.Label
+        X_PredictedLabel                matlab.ui.control.Label
+        Y_PredictedLabel                matlab.ui.control.Label
+        UIAxes                          matlab.ui.control.UIAxes
+        EditTab                         matlab.ui.container.Tab
+        LatencyEditField                matlab.ui.control.NumericEditField
+        LatencyEditFieldLabel           matlab.ui.control.Label
+        MicrophonePositionErrorEditField  matlab.ui.control.NumericEditField
+        MicrophonePositionErrorEditFieldLabel  matlab.ui.control.Label
+        CalibrationSignalPositionErrorEditField  matlab.ui.control.NumericEditField
+        CalibrationSignalPositionErrorEditFieldLabel  matlab.ui.control.Label
+        FilterCutoffFrequencyEditField  matlab.ui.control.NumericEditField
+        FilterCutoffFrequencyEditFieldLabel  matlab.ui.control.Label
+        SNREditField                    matlab.ui.control.NumericEditField
+        SNREditFieldLabel               matlab.ui.control.Label
+        SamplerateEditField             matlab.ui.control.NumericEditField
+        SamplerateEditFieldLabel        matlab.ui.control.Label
+        MaximumCalibrationSignalFrequencyEditField  matlab.ui.control.NumericEditField
+        MaximumCalibrationSignalFrequencyEditFieldLabel  matlab.ui.control.Label
+        MaximumSourceFrequencyEditField  matlab.ui.control.NumericEditField
+        MaximumSourceFrequencyEditFieldLabel  matlab.ui.control.Label
+        SpeedofsoundEditField           matlab.ui.control.NumericEditField
+        SpeedofsoundEditFieldLabel      matlab.ui.control.Label
+        OptionalparametersLabel         matlab.ui.control.Label
     end
 
     
@@ -101,15 +102,21 @@ classdef GUI < matlab.apps.AppBase
             x_s = app.XCoordinateEditField.Value;
             y_s = app.YCoordinateEditField.Value;
 
-            c = app.SpeedofsoundEditField.Value;
-            srcFreq = app.MaxsrcfreqEditField.Value;
-            calFreq = app.MaxcalfreqEditField.Value;
-            samplerate = app.SamplerateEditField.Value;
             snr = app.SNREditField.Value;
-            pbfreq = app.PassbandfreqEditField.Value;
-            calposerror = app.CalposerrorEditField.Value;
-            micposerror = app.MicposerrorEditField.Value;
-            syncerror = app.SyncerrorEditField.Value;
+            samplerate = app.SamplerateEditField.Value;
+            cutoff = app.FilterCutoffFrequencyEditField.Value;
+            latency = app.LatencyEditField.Value;
+            calposerror = app.CalibrationSignalPositionErrorEditField.Value;
+            micposerror = app.MicrophonePositionErrorEditField.Value;
+            srcFreq = app.MaximumSourceFrequencyEditField.Value;
+            calFreq = app.MaximumCalibrationSignalFrequencyEditField.Value;
+            c = app.SpeedofsoundEditField.Value;
+            grid = [0.8, 0.5];
+            cal = [0.4, 0.25];
+            mic1 = [0, 0];
+            mic2 = [0, 0.5];
+            mic3 = [0.8, 0];
+            mic4 = [0.8, 0.5];
 
             if (x_s>0.8||x_s<0)||(y_s>0.5||y_s<0)
                 f = msgbox("Position out of bounds, please stay within the grid","Error","error");
@@ -117,12 +124,12 @@ classdef GUI < matlab.apps.AppBase
                 plot(app.UIAxes, x_s*1.25, y_s*2,'*')
                 hold(app.UIAxes, 'on');
     
-                coords = simulation(x_s,y_s, snr, samplerate, pbfreq, syncerror,  calposerror, micposerror, srcFreq, calFreq, c, [x_s, y_s], [x_s/2, y_s/2], [0, 0], [0, 0.5], [0.8, 0], [0.8, 0.5]);
+                coords = simulation(x_s,y_s, snr, samplerate, cutoff, latency, calposerror, micposerror, srcFreq, calFreq, c, grid, cal, mic1, mic2, mic3, mic4);
     
                 plot(app.UIAxes,coords(1)*1.25,coords(2)*2,"-s")
                 hold(app.UIAxes,'on')
                     
-                lgd = legend(app.UIAxes,{'Mic 1', 'Mic 2', 'Mic 3', 'Mic 4', 'Calibration Signal', 'Actual Position', 'Estimated Position'}, 'Location', 'southeastoutside');
+                lgd = legend(app.UIAxes,{'Mic 1', 'Mic 2', 'Mic 3', 'Mic 4', 'Calibration Signal', 'Actual Position', 'Predicted Position'}, 'Location', 'southeastoutside');
                 title(lgd, "Legend")
 
                 app.Label.Text = string(coords(1));
@@ -133,6 +140,17 @@ classdef GUI < matlab.apps.AppBase
         % Button pushed function: HelpButton
         function HelpButtonPushed(app, event)
             app.HelptextTextArea.Visible = "on";
+        end
+
+        % Button pushed function: ResetGridButton
+        function ResetGridButtonPushed(app, event)
+            cla(app.UIAxes); % Resets the grid
+            Initialise_Mics(app);
+            plot(app.UIAxes,0.5,0.5,"*")
+            hold(app.UIAxes,"on")
+            text(app.UIAxes,0.52,0.5,'CS','fontsize' , 10)
+            lgd = legend(app.UIAxes,{'Mic 1', 'Mic 2', 'Mic 3', 'Mic 4', 'Calibration Signal', 'Actual Position', 'Predicted Position'}, 'Location', 'southeastoutside');
+            title(lgd, "Legend")
         end
     end
 
@@ -158,9 +176,9 @@ classdef GUI < matlab.apps.AppBase
             % Create UIAxes
             app.UIAxes = uiaxes(app.SimulateTab);
             title(app.UIAxes, 'A1 Grid')
-            xlabel(app.UIAxes, 'x')
-            ylabel(app.UIAxes, 'y')
-            zlabel(app.UIAxes, 'z')
+            xlabel(app.UIAxes, 'X')
+            ylabel(app.UIAxes, 'Y')
+            zlabel(app.UIAxes, 'Z')
             app.UIAxes.XTick = [0 0.125 0.25 0.375 0.5 0.625 0.75 0.875 1];
             app.UIAxes.XTickLabelRotation = 0;
             app.UIAxes.XTickLabel = {'0'; '0.1'; '0.2'; '0.3'; '0.4'; '0.5'; '0.6'; '0.7'; '0.8'};
@@ -175,12 +193,12 @@ classdef GUI < matlab.apps.AppBase
             % Create Y_PredictedLabel
             app.Y_PredictedLabel = uilabel(app.SimulateTab);
             app.Y_PredictedLabel.Position = [35 213 70 22];
-            app.Y_PredictedLabel.Text = 'y estimate';
+            app.Y_PredictedLabel.Text = 'Y_Predicted';
 
             % Create X_PredictedLabel
             app.X_PredictedLabel = uilabel(app.SimulateTab);
             app.X_PredictedLabel.Position = [35 246 70 22];
-            app.X_PredictedLabel.Text = 'x estimate';
+            app.X_PredictedLabel.Text = 'X_Predicted';
 
             % Create Label_2
             app.Label_2 = uilabel(app.SimulateTab);
@@ -202,7 +220,7 @@ classdef GUI < matlab.apps.AppBase
             app.XCoordinateEditFieldLabel = uilabel(app.SimulateTab);
             app.XCoordinateEditFieldLabel.HorizontalAlignment = 'right';
             app.XCoordinateEditFieldLabel.Position = [26 392 76 22];
-            app.XCoordinateEditFieldLabel.Text = 'x coordinate';
+            app.XCoordinateEditFieldLabel.Text = 'X-Coordinate';
 
             % Create XCoordinateEditField
             app.XCoordinateEditField = uieditfield(app.SimulateTab, 'numeric');
@@ -212,7 +230,7 @@ classdef GUI < matlab.apps.AppBase
             app.YCoordinateEditFieldLabel = uilabel(app.SimulateTab);
             app.YCoordinateEditFieldLabel.HorizontalAlignment = 'right';
             app.YCoordinateEditFieldLabel.Position = [27 352 75 22];
-            app.YCoordinateEditFieldLabel.Text = 'y coordinate';
+            app.YCoordinateEditFieldLabel.Text = 'Y-Coordinate';
 
             % Create YCoordinateEditField
             app.YCoordinateEditField = uieditfield(app.SimulateTab, 'numeric');
@@ -231,6 +249,12 @@ classdef GUI < matlab.apps.AppBase
             app.HelptextTextArea.Placeholder = 'Welcome to the simulation program! This program simulates four different microphones, each placed on each corner of the grid, working together to detect a sound source within placed at a location of your choice in the grid. To set the position of the sound source, change the values of the x- and y-coordinates, and press the "Find Sound Source" button. The coordinates of the sound, as detected by the microphones will be displayed. To change other parameters, click on the "Edit" tab.';
             app.HelptextTextArea.Position = [12 14 248 150];
 
+            % Create ResetGridButton
+            app.ResetGridButton = uibutton(app.SimulateTab, 'push');
+            app.ResetGridButton.ButtonPushedFcn = createCallbackFcn(app, @ResetGridButtonPushed, true);
+            app.ResetGridButton.Position = [587 56 100 23];
+            app.ResetGridButton.Text = 'Reset Grid';
+
             % Create EditTab
             app.EditTab = uitab(app.TabGroup);
             app.EditTab.Title = 'Edit';
@@ -240,106 +264,106 @@ classdef GUI < matlab.apps.AppBase
             app.OptionalparametersLabel.FontSize = 18;
             app.OptionalparametersLabel.FontWeight = 'bold';
             app.OptionalparametersLabel.Position = [16 391 180 41];
-            app.OptionalparametersLabel.Text = 'Simulation Parameters';
+            app.OptionalparametersLabel.Text = 'Optional parameters';
 
             % Create SpeedofsoundEditFieldLabel
             app.SpeedofsoundEditFieldLabel = uilabel(app.EditTab);
             app.SpeedofsoundEditFieldLabel.HorizontalAlignment = 'right';
-            app.SpeedofsoundEditFieldLabel.Position = [16 361 89 22];
-            app.SpeedofsoundEditFieldLabel.Text = 'Speed of Sound (m/s)';
+            app.SpeedofsoundEditFieldLabel.Position = [12 361 89 22];
+            app.SpeedofsoundEditFieldLabel.Text = 'Speed of sound';
 
             % Create SpeedofsoundEditField
             app.SpeedofsoundEditField = uieditfield(app.EditTab, 'numeric');
-            app.SpeedofsoundEditField.Position = [120 361 100 22];
+            app.SpeedofsoundEditField.Position = [339 361 123 22];
             app.SpeedofsoundEditField.Value = 343;
 
-            % Create MaxsrcfreqEditFieldLabel
-            app.MaxsrcfreqEditFieldLabel = uilabel(app.EditTab);
-            app.MaxsrcfreqEditFieldLabel.HorizontalAlignment = 'right';
-            app.MaxsrcfreqEditFieldLabel.Position = [34 331 71 22];
-            app.MaxsrcfreqEditFieldLabel.Text = 'Maximum Source Frequency (Hz)';
+            % Create MaximumSourceFrequencyEditFieldLabel
+            app.MaximumSourceFrequencyEditFieldLabel = uilabel(app.EditTab);
+            app.MaximumSourceFrequencyEditFieldLabel.HorizontalAlignment = 'right';
+            app.MaximumSourceFrequencyEditFieldLabel.Position = [12 331 158 22];
+            app.MaximumSourceFrequencyEditFieldLabel.Text = 'Maximum Source Frequency';
 
-            % Create MaxsrcfreqEditField
-            app.MaxsrcfreqEditField = uieditfield(app.EditTab, 'numeric');
-            app.MaxsrcfreqEditField.Position = [120 331 100 22];
-            app.MaxsrcfreqEditField.Value = 100;
+            % Create MaximumSourceFrequencyEditField
+            app.MaximumSourceFrequencyEditField = uieditfield(app.EditTab, 'numeric');
+            app.MaximumSourceFrequencyEditField.Position = [339 331 123 22];
+            app.MaximumSourceFrequencyEditField.Value = 100;
 
-            % Create MaxcalfreqEditFieldLabel
-            app.MaxcalfreqEditFieldLabel = uilabel(app.EditTab);
-            app.MaxcalfreqEditFieldLabel.HorizontalAlignment = 'right';
-            app.MaxcalfreqEditFieldLabel.Position = [35 299 70 22];
-            app.MaxcalfreqEditFieldLabel.Text = 'Maximum Calibration Frequency (Hz)';
+            % Create MaximumCalibrationSignalFrequencyEditFieldLabel
+            app.MaximumCalibrationSignalFrequencyEditFieldLabel = uilabel(app.EditTab);
+            app.MaximumCalibrationSignalFrequencyEditFieldLabel.HorizontalAlignment = 'right';
+            app.MaximumCalibrationSignalFrequencyEditFieldLabel.Position = [12 299 215 22];
+            app.MaximumCalibrationSignalFrequencyEditFieldLabel.Text = 'Maximum Calibration Signal Frequency';
 
-            % Create MaxcalfreqEditField
-            app.MaxcalfreqEditField = uieditfield(app.EditTab, 'numeric');
-            app.MaxcalfreqEditField.Position = [120 299 100 22];
-            app.MaxcalfreqEditField.Value = 1000;
+            % Create MaximumCalibrationSignalFrequencyEditField
+            app.MaximumCalibrationSignalFrequencyEditField = uieditfield(app.EditTab, 'numeric');
+            app.MaximumCalibrationSignalFrequencyEditField.Position = [339 299 123 22];
+            app.MaximumCalibrationSignalFrequencyEditField.Value = 1000;
 
             % Create SamplerateEditFieldLabel
             app.SamplerateEditFieldLabel = uilabel(app.EditTab);
             app.SamplerateEditFieldLabel.HorizontalAlignment = 'right';
-            app.SamplerateEditFieldLabel.Position = [35 266 70 22];
-            app.SamplerateEditFieldLabel.Text = 'Sample Rate (Hz)';
+            app.SamplerateEditFieldLabel.Position = [12 266 69 22];
+            app.SamplerateEditFieldLabel.Text = 'Sample rate';
 
             % Create SamplerateEditField
             app.SamplerateEditField = uieditfield(app.EditTab, 'numeric');
-            app.SamplerateEditField.Position = [120 266 100 22];
+            app.SamplerateEditField.Position = [339 266 123 22];
             app.SamplerateEditField.Value = 48000;
 
             % Create SNREditFieldLabel
             app.SNREditFieldLabel = uilabel(app.EditTab);
             app.SNREditFieldLabel.HorizontalAlignment = 'right';
-            app.SNREditFieldLabel.Position = [75 232 30 22];
+            app.SNREditFieldLabel.Position = [12 232 30 22];
             app.SNREditFieldLabel.Text = 'SNR';
 
             % Create SNREditField
             app.SNREditField = uieditfield(app.EditTab, 'numeric');
-            app.SNREditField.Position = [120 232 100 22];
+            app.SNREditField.Position = [339 232 123 22];
             app.SNREditField.Value = 65;
 
-            % Create PassbandfreqEditFieldLabel
-            app.PassbandfreqEditFieldLabel = uilabel(app.EditTab);
-            app.PassbandfreqEditFieldLabel.HorizontalAlignment = 'right';
-            app.PassbandfreqEditFieldLabel.Position = [23 199 82 22];
-            app.PassbandfreqEditFieldLabel.Text = 'Filter Cuttoff Frequency (Hz)';
+            % Create FilterCutoffFrequencyEditFieldLabel
+            app.FilterCutoffFrequencyEditFieldLabel = uilabel(app.EditTab);
+            app.FilterCutoffFrequencyEditFieldLabel.HorizontalAlignment = 'right';
+            app.FilterCutoffFrequencyEditFieldLabel.Position = [12 199 127 22];
+            app.FilterCutoffFrequencyEditFieldLabel.Text = 'Filter Cutoff Frequency';
 
-            % Create PassbandfreqEditField
-            app.PassbandfreqEditField = uieditfield(app.EditTab, 'numeric');
-            app.PassbandfreqEditField.Position = [120 199 100 22];
-            app.PassbandfreqEditField.Value = 10000;
+            % Create FilterCutoffFrequencyEditField
+            app.FilterCutoffFrequencyEditField = uieditfield(app.EditTab, 'numeric');
+            app.FilterCutoffFrequencyEditField.Position = [339 199 123 22];
+            app.FilterCutoffFrequencyEditField.Value = 15000;
 
-            % Create CalposerrorEditFieldLabel
-            app.CalposerrorEditFieldLabel = uilabel(app.EditTab);
-            app.CalposerrorEditFieldLabel.HorizontalAlignment = 'right';
-            app.CalposerrorEditFieldLabel.Position = [31 163 74 22];
-            app.CalposerrorEditFieldLabel.Text = 'Calibration Position Error Factor (m)';
+            % Create CalibrationSignalPositionErrorEditFieldLabel
+            app.CalibrationSignalPositionErrorEditFieldLabel = uilabel(app.EditTab);
+            app.CalibrationSignalPositionErrorEditFieldLabel.HorizontalAlignment = 'right';
+            app.CalibrationSignalPositionErrorEditFieldLabel.Position = [12 163 175 22];
+            app.CalibrationSignalPositionErrorEditFieldLabel.Text = 'Calibration Signal Position Error';
 
-            % Create CalposerrorEditField
-            app.CalposerrorEditField = uieditfield(app.EditTab, 'numeric');
-            app.CalposerrorEditField.Position = [120 163 100 22];
-            app.CalposerrorEditField.Value = 0.001;
+            % Create CalibrationSignalPositionErrorEditField
+            app.CalibrationSignalPositionErrorEditField = uieditfield(app.EditTab, 'numeric');
+            app.CalibrationSignalPositionErrorEditField.Position = [339 163 123 22];
+            app.CalibrationSignalPositionErrorEditField.Value = 0.001;
 
-            % Create MicposerrorEditFieldLabel
-            app.MicposerrorEditFieldLabel = uilabel(app.EditTab);
-            app.MicposerrorEditFieldLabel.HorizontalAlignment = 'right';
-            app.MicposerrorEditFieldLabel.Position = [29 129 75 22];
-            app.MicposerrorEditFieldLabel.Text = 'Mic Position Error Factor (m)';
+            % Create MicrophonePositionErrorEditFieldLabel
+            app.MicrophonePositionErrorEditFieldLabel = uilabel(app.EditTab);
+            app.MicrophonePositionErrorEditFieldLabel.HorizontalAlignment = 'right';
+            app.MicrophonePositionErrorEditFieldLabel.Position = [12 129 143 22];
+            app.MicrophonePositionErrorEditFieldLabel.Text = 'Microphone Position Error';
 
-            % Create MicposerrorEditField
-            app.MicposerrorEditField = uieditfield(app.EditTab, 'numeric');
-            app.MicposerrorEditField.Position = [119 129 100 22];
-            app.MicposerrorEditField.Value = 0.001;
+            % Create MicrophonePositionErrorEditField
+            app.MicrophonePositionErrorEditField = uieditfield(app.EditTab, 'numeric');
+            app.MicrophonePositionErrorEditField.Position = [339 129 123 22];
+            app.MicrophonePositionErrorEditField.Value = 0.001;
 
-            % Create SyncerrorEditFieldLabel
-            app.SyncerrorEditFieldLabel = uilabel(app.EditTab);
-            app.SyncerrorEditFieldLabel.HorizontalAlignment = 'right';
-            app.SyncerrorEditFieldLabel.Position = [45 96 60 22];
-            app.SyncerrorEditFieldLabel.Text = 'Latency (s)';
+            % Create LatencyEditFieldLabel
+            app.LatencyEditFieldLabel = uilabel(app.EditTab);
+            app.LatencyEditFieldLabel.HorizontalAlignment = 'right';
+            app.LatencyEditFieldLabel.Position = [16 97 43 22];
+            app.LatencyEditFieldLabel.Text = 'Latency';
 
-            % Create SyncerrorEditField
-            app.SyncerrorEditField = uieditfield(app.EditTab, 'numeric');
-            app.SyncerrorEditField.Position = [120 96 100 22];
-            app.SyncerrorEditField.Value = 0.01;
+            % Create LatencyEditField
+            app.LatencyEditField = uieditfield(app.EditTab, 'numeric');
+            app.LatencyEditField.Position = [339 97 123 22];
+            app.LatencyEditField.Value = 0.01;
 
             % Create EEE3097SSIMULATIONLabel
             app.EEE3097SSIMULATIONLabel = uilabel(app.UIFigure);
@@ -380,7 +404,7 @@ classdef GUI < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = GUI
+        function app = app1
 
             % Create UIFigure and components
             createComponents(app)
