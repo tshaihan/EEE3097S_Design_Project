@@ -176,9 +176,9 @@ classdef GUI < matlab.apps.AppBase
             % Create UIAxes
             app.UIAxes = uiaxes(app.SimulateTab);
             title(app.UIAxes, 'A1 Grid')
-            xlabel(app.UIAxes, 'X')
-            ylabel(app.UIAxes, 'Y')
-            zlabel(app.UIAxes, 'Z')
+            xlabel(app.UIAxes, 'x')
+            ylabel(app.UIAxes, 'y')
+            zlabel(app.UIAxes, 'z')
             app.UIAxes.XTick = [0 0.125 0.25 0.375 0.5 0.625 0.75 0.875 1];
             app.UIAxes.XTickLabelRotation = 0;
             app.UIAxes.XTickLabel = {'0'; '0.1'; '0.2'; '0.3'; '0.4'; '0.5'; '0.6'; '0.7'; '0.8'};
@@ -193,12 +193,12 @@ classdef GUI < matlab.apps.AppBase
             % Create Y_PredictedLabel
             app.Y_PredictedLabel = uilabel(app.SimulateTab);
             app.Y_PredictedLabel.Position = [35 213 70 22];
-            app.Y_PredictedLabel.Text = 'Y_Predicted';
+            app.Y_PredictedLabel.Text = 'y estimate';
 
             % Create X_PredictedLabel
             app.X_PredictedLabel = uilabel(app.SimulateTab);
             app.X_PredictedLabel.Position = [35 246 70 22];
-            app.X_PredictedLabel.Text = 'X_Predicted';
+            app.X_PredictedLabel.Text = 'x estimate';
 
             % Create Label_2
             app.Label_2 = uilabel(app.SimulateTab);
@@ -220,7 +220,7 @@ classdef GUI < matlab.apps.AppBase
             app.XCoordinateEditFieldLabel = uilabel(app.SimulateTab);
             app.XCoordinateEditFieldLabel.HorizontalAlignment = 'right';
             app.XCoordinateEditFieldLabel.Position = [26 392 76 22];
-            app.XCoordinateEditFieldLabel.Text = 'X-Coordinate';
+            app.XCoordinateEditFieldLabel.Text = 'x-coordinate';
 
             % Create XCoordinateEditField
             app.XCoordinateEditField = uieditfield(app.SimulateTab, 'numeric');
@@ -230,7 +230,7 @@ classdef GUI < matlab.apps.AppBase
             app.YCoordinateEditFieldLabel = uilabel(app.SimulateTab);
             app.YCoordinateEditFieldLabel.HorizontalAlignment = 'right';
             app.YCoordinateEditFieldLabel.Position = [27 352 75 22];
-            app.YCoordinateEditFieldLabel.Text = 'Y-Coordinate';
+            app.YCoordinateEditFieldLabel.Text = 'y-coordinate';
 
             % Create YCoordinateEditField
             app.YCoordinateEditField = uieditfield(app.SimulateTab, 'numeric');
@@ -253,7 +253,7 @@ classdef GUI < matlab.apps.AppBase
             app.ResetGridButton = uibutton(app.SimulateTab, 'push');
             app.ResetGridButton.ButtonPushedFcn = createCallbackFcn(app, @ResetGridButtonPushed, true);
             app.ResetGridButton.Position = [587 56 100 23];
-            app.ResetGridButton.Text = 'Reset Grid';
+            app.ResetGridButton.Text = 'Clear Grid';
 
             % Create EditTab
             app.EditTab = uitab(app.TabGroup);
@@ -264,13 +264,13 @@ classdef GUI < matlab.apps.AppBase
             app.OptionalparametersLabel.FontSize = 18;
             app.OptionalparametersLabel.FontWeight = 'bold';
             app.OptionalparametersLabel.Position = [16 391 180 41];
-            app.OptionalparametersLabel.Text = 'Optional parameters';
+            app.OptionalparametersLabel.Text = 'Simulation Parameters';
 
             % Create SpeedofsoundEditFieldLabel
             app.SpeedofsoundEditFieldLabel = uilabel(app.EditTab);
             app.SpeedofsoundEditFieldLabel.HorizontalAlignment = 'right';
             app.SpeedofsoundEditFieldLabel.Position = [12 361 89 22];
-            app.SpeedofsoundEditFieldLabel.Text = 'Speed of sound';
+            app.SpeedofsoundEditFieldLabel.Text = 'Speed of Sound (m/s)';
 
             % Create SpeedofsoundEditField
             app.SpeedofsoundEditField = uieditfield(app.EditTab, 'numeric');
@@ -281,7 +281,7 @@ classdef GUI < matlab.apps.AppBase
             app.MaximumSourceFrequencyEditFieldLabel = uilabel(app.EditTab);
             app.MaximumSourceFrequencyEditFieldLabel.HorizontalAlignment = 'right';
             app.MaximumSourceFrequencyEditFieldLabel.Position = [12 331 158 22];
-            app.MaximumSourceFrequencyEditFieldLabel.Text = 'Maximum Source Frequency';
+            app.MaximumSourceFrequencyEditFieldLabel.Text = 'Maximum Source Chirp Frequency (Hz)';
 
             % Create MaximumSourceFrequencyEditField
             app.MaximumSourceFrequencyEditField = uieditfield(app.EditTab, 'numeric');
@@ -292,7 +292,7 @@ classdef GUI < matlab.apps.AppBase
             app.MaximumCalibrationSignalFrequencyEditFieldLabel = uilabel(app.EditTab);
             app.MaximumCalibrationSignalFrequencyEditFieldLabel.HorizontalAlignment = 'right';
             app.MaximumCalibrationSignalFrequencyEditFieldLabel.Position = [12 299 215 22];
-            app.MaximumCalibrationSignalFrequencyEditFieldLabel.Text = 'Maximum Calibration Signal Frequency';
+            app.MaximumCalibrationSignalFrequencyEditFieldLabel.Text = 'Maximum Calibration Chirp Frequency (Hz)';
 
             % Create MaximumCalibrationSignalFrequencyEditField
             app.MaximumCalibrationSignalFrequencyEditField = uieditfield(app.EditTab, 'numeric');
@@ -303,7 +303,7 @@ classdef GUI < matlab.apps.AppBase
             app.SamplerateEditFieldLabel = uilabel(app.EditTab);
             app.SamplerateEditFieldLabel.HorizontalAlignment = 'right';
             app.SamplerateEditFieldLabel.Position = [12 266 69 22];
-            app.SamplerateEditFieldLabel.Text = 'Sample rate';
+            app.SamplerateEditFieldLabel.Text = 'Sample Rate (Hz)';
 
             % Create SamplerateEditField
             app.SamplerateEditField = uieditfield(app.EditTab, 'numeric');
@@ -314,7 +314,7 @@ classdef GUI < matlab.apps.AppBase
             app.SNREditFieldLabel = uilabel(app.EditTab);
             app.SNREditFieldLabel.HorizontalAlignment = 'right';
             app.SNREditFieldLabel.Position = [12 232 30 22];
-            app.SNREditFieldLabel.Text = 'SNR';
+            app.SNREditFieldLabel.Text = 'SNR (dBW)';
 
             % Create SNREditField
             app.SNREditField = uieditfield(app.EditTab, 'numeric');
@@ -325,18 +325,18 @@ classdef GUI < matlab.apps.AppBase
             app.FilterCutoffFrequencyEditFieldLabel = uilabel(app.EditTab);
             app.FilterCutoffFrequencyEditFieldLabel.HorizontalAlignment = 'right';
             app.FilterCutoffFrequencyEditFieldLabel.Position = [12 199 127 22];
-            app.FilterCutoffFrequencyEditFieldLabel.Text = 'Filter Cutoff Frequency';
+            app.FilterCutoffFrequencyEditFieldLabel.Text = 'Filter Cuttoff Frequency (Hz)';
 
             % Create FilterCutoffFrequencyEditField
             app.FilterCutoffFrequencyEditField = uieditfield(app.EditTab, 'numeric');
             app.FilterCutoffFrequencyEditField.Position = [339 199 123 22];
-            app.FilterCutoffFrequencyEditField.Value = 15000;
+            app.FilterCutoffFrequencyEditField.Value = 10000;
 
             % Create CalibrationSignalPositionErrorEditFieldLabel
             app.CalibrationSignalPositionErrorEditFieldLabel = uilabel(app.EditTab);
             app.CalibrationSignalPositionErrorEditFieldLabel.HorizontalAlignment = 'right';
             app.CalibrationSignalPositionErrorEditFieldLabel.Position = [12 163 175 22];
-            app.CalibrationSignalPositionErrorEditFieldLabel.Text = 'Calibration Signal Position Error';
+            app.CalibrationSignalPositionErrorEditFieldLabel.Text = 'Calibration Position Error Factor (m)';
 
             % Create CalibrationSignalPositionErrorEditField
             app.CalibrationSignalPositionErrorEditField = uieditfield(app.EditTab, 'numeric');
@@ -347,7 +347,7 @@ classdef GUI < matlab.apps.AppBase
             app.MicrophonePositionErrorEditFieldLabel = uilabel(app.EditTab);
             app.MicrophonePositionErrorEditFieldLabel.HorizontalAlignment = 'right';
             app.MicrophonePositionErrorEditFieldLabel.Position = [12 129 143 22];
-            app.MicrophonePositionErrorEditFieldLabel.Text = 'Microphone Position Error';
+            app.MicrophonePositionErrorEditFieldLabel.Text = 'Mic Position Error Factor (m)';
 
             % Create MicrophonePositionErrorEditField
             app.MicrophonePositionErrorEditField = uieditfield(app.EditTab, 'numeric');
@@ -358,7 +358,7 @@ classdef GUI < matlab.apps.AppBase
             app.LatencyEditFieldLabel = uilabel(app.EditTab);
             app.LatencyEditFieldLabel.HorizontalAlignment = 'right';
             app.LatencyEditFieldLabel.Position = [16 97 43 22];
-            app.LatencyEditFieldLabel.Text = 'Latency';
+            app.LatencyEditFieldLabel.Text = 'Latency (s)';
 
             % Create LatencyEditField
             app.LatencyEditField = uieditfield(app.EditTab, 'numeric');
@@ -404,7 +404,7 @@ classdef GUI < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = app1
+        function app = GUI
 
             % Create UIFigure and components
             createComponents(app)
