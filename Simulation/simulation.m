@@ -202,7 +202,9 @@ function coords = triangulate(grid, m1, m2, m3, m4, t12, t13, t14, c)
     x = grid/2; % Uses center as initial point
     xdata = [m1(1), m1(2), m2(1), m2(2), m3(1), m3(2), m4(1), m4(2)];
     ydata = [t12*c, t13*c, t14*c];
-    coords = lsqcurvefit(@func, x, xdata, ydata);
+    lb = [0, 0]; % Uses the origin as a lower bound
+    ub = grid; % Uses the grid size as an upper bound 
+    coords = lsqcurvefit(@func, x, xdata, ydata, lb, ub);
 end
 
 % Non-Linear LSE Optimization Function
