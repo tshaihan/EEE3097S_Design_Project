@@ -11,8 +11,8 @@ function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, vararg
     addOptional(p, 'sampleRate', 48000);    % signal sample rate (Hz)
     addOptional(p, 'cutoffFreq', 10000);    % cutoff frequency of lp filter (Hz)
     addOptional(p, 'latency', 0.01);        % delay due to signal desync (s)
-    addOptional(p, 'calPosError', 0.005);   % error factor of calibration signal position (m)
-    addOptional(p, 'micPosError', 0.005);   % error factor of mic position (m)
+    addOptional(p, 'calPosError', 0.001);   % error factor of calibration signal position (m)
+    addOptional(p, 'micPosError', 0.001);   % error factor of mic position (m)
     addOptional(p, 'srcFreq', 100);         % max frequency of source chirp signal (Hz)
     addOptional(p, 'calFreq', 1000);        % max frequency of calibration chirp signal (Hz)
     addOptional(p, 'c', 343);               % speed of sound (m/s)
@@ -44,19 +44,29 @@ function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, vararg
     mic4 = p.Results.mic4;
     
     % Apply error to calibration signal and mic positions
-    cal = cal+(calPosError*randn(1, 2));
-    mic1 = mic1+(micPosError*randn(1, 2));
-    mic2 = mic2+(micPosError*randn(1, 2));
-    mic3 = mic3+(micPosError*randn(1, 2));
-    mic4 = mic4+(micPosError*randn(1, 2));
+    actualCal = cal+(calPosError*randn(1, 2));
+    actualMic1 = mic1+(micPosError*randn(1, 2));
+    actualMic2 = mic2+(micPosError*randn(1, 2));
+    actualMic3 = mic3+(micPosError*randn(1, 2));
+    actualMic4 = mic4+(micPosError*randn(1, 2));
     
-    % Calculate ideal source TOA values for each mic
+    % Calculate actual source and calibration TOA values at each mic for
+    % generating signals
+    actualSrcToa1 = sqrt((x-actualMic1(1))^2+(y-actualMic1(2))^2)/c;
+    actualSrcToa2 = sqrt((x-actualMic2(1))^2+(y-actualMic2(2))^2)/c;
+    actualSrcToa3 = sqrt((x-actualMic3(1))^2+(y-actualMic3(2))^2)/c;
+    actualSrcToa4 = sqrt((x-actualMic4(1))^2+(y-actualMic4(2))^2)/c;
+    actualCalToa1 = sqrt((actualMic1(1)-actualCal(1))^2+(actualMic1(2)-actualCal(2))^2)/c; 
+    actualCalToa2 = sqrt((actualMic2(1)-actualCal(1))^2+(actualMic2(2)-actualCal(2))^2)/c;
+    actualCalToa3 = sqrt((actualMic3(1)-actualCal(1))^2+(actualMic3(2)-actualCal(2))^2)/c;
+    actualCalToa4 = sqrt((actualMic4(1)-actualCal(1))^2+(actualMic4(2)-actualCal(2))^2)/c;
+
+    % Calculate ideal source and calibration TOA values at each mic for
+    % processing signals
     srcToa1 = sqrt((x-mic1(1))^2+(y-mic1(2))^2)/c;
     srcToa2 = sqrt((x-mic2(1))^2+(y-mic2(2))^2)/c;
     srcToa3 = sqrt((x-mic3(1))^2+(y-mic3(2))^2)/c;
     srcToa4 = sqrt((x-mic4(1))^2+(y-mic4(2))^2)/c;
-
-    % Calculate known ideal calibration TOA values for each mic
     calToa1 = sqrt((mic1(1)-cal(1))^2+(mic1(2)-cal(2))^2)/c; 
     calToa2 = sqrt((mic2(1)-cal(1))^2+(mic2(2)-cal(2))^2)/c;
     calToa3 = sqrt((mic3(1)-cal(1))^2+(mic3(2)-cal(2))^2)/c;
@@ -68,10 +78,10 @@ function [estCoords, syncError, tdoaError, coordError] = simulation(x, y, vararg
     calSig = cos(2*pi*calFreq/10*t.^2); % 0-calFreq Hz chirp
     calDelay = 2; % Start calibration signal 2s after recording
     srcDelay = 2; % Start source signal 2s after calibration signal
-    sig1 = generateSignal(srcSig, calSig, srcToa1, calToa1, srcDelay, calDelay, 0, sampleRate, snr);
-    sig2 = generateSignal(srcSig, calSig, srcToa2, calToa2, srcDelay, calDelay, 0, sampleRate, snr);
-    sig3 = generateSignal(srcSig, calSig, srcToa3, calToa3, srcDelay, calDelay, latency, sampleRate, snr);
-    sig4 = generateSignal(srcSig, calSig, srcToa4, calToa4, srcDelay, calDelay, latency, sampleRate, snr);
+    sig1 = generateSignal(srcSig, calSig, actualSrcToa1, actualCalToa1, srcDelay, calDelay, 0, sampleRate, snr);
+    sig2 = generateSignal(srcSig, calSig, actualSrcToa2, actualCalToa2, srcDelay, calDelay, 0, sampleRate, snr);
+    sig3 = generateSignal(srcSig, calSig, actualSrcToa3, actualCalToa3, srcDelay, calDelay, latency, sampleRate, snr);
+    sig4 = generateSignal(srcSig, calSig, actualSrcToa4, actualCalToa4, srcDelay, calDelay, latency, sampleRate, snr);
     [sig1, sig2, sig3, sig4] = equalizeLengths(sig1, sig2, sig3, sig4);
 
     % Lowpass filter signals
@@ -169,9 +179,10 @@ end
 
 % Shifts the signal's start
 function sig = shiftSig(sig, shift)
-    if shift>=0
+    if shift>0
         sig = sig(shift:end);
-    else
+    end
+    if shift<0
         sig = [zeros(abs(shift), 1); sig];
     end
 end

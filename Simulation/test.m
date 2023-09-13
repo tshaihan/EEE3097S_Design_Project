@@ -46,24 +46,24 @@ function test
     
     fprintf(fileID, 'Calibration Signal Position Error Factor\n');
     fprintf(fileID, 'x; y; x estimate; y estimate; sync error; TDOA error; position error; calibration signal position error factor\n');
-    calPosError = 0.005;
-    for i = 1:20
+    calPosError = 0.001;
+    for i = 1:21
         [coords, syncError, tdoaError, coordError] = simulation(0.5, 0.25, 65, 48000, 15000, 0.01, calPosError);
         fprintf(fileID, '0.5; 0.25; %f; %f;', coords(1), coords(2));
         posError = sqrt(coordError(1)^2+coordError(2)^2);
         fprintf(fileID, '%f; %f; %f; %f\n', mean(syncError), mean(tdoaError), posError, calPosError);
-        calPosError = calPosError + 0.005;
+        calPosError = calPosError + 0.001;
     end
 
     fprintf(fileID, 'Mic Position Error Factor\n');
     fprintf(fileID, 'x; y; x estimate; y estimate; sync error; TDOA error; position error; mic position error factor\n');
-    micPosError = 0.005;
-    for i = 1:20
+    micPosError = 0.001;
+    for i = 1:21
         [coords, syncError, tdoaError, coordError] = simulation(0.5, 0.25, 65, 48000, 15000, 0.01, 0.005, micPosError);
         fprintf(fileID, '0.5; 0.25; %f; %f;', coords(1), coords(2));
         posError = sqrt(coordError(1)^2+coordError(2)^2);
         fprintf(fileID, '%f; %f; %f; %f\n', mean(syncError), mean(tdoaError), posError, micPosError);
-        micPosError = micPosError + 0.005;
+        micPosError = micPosError + 0.001;
     end
 
     fprintf(fileID, 'Source Signal Frequency\n');
