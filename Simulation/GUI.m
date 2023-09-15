@@ -10,6 +10,7 @@ classdef GUI < matlab.apps.AppBase
         EEE3097SSIMULATIONLabel         matlab.ui.control.Label
         TabGroup                        matlab.ui.container.TabGroup
         SimulateTab                     matlab.ui.container.Tab
+        EntertheSoundSourceCoordinatesLabel  matlab.ui.control.Label
         TDOAErrorValue                  matlab.ui.control.Label
         TDOAErrorLabel                  matlab.ui.control.Label
         PosErrorValue                   matlab.ui.control.Label
@@ -296,6 +297,12 @@ classdef GUI < matlab.apps.AppBase
             app.TDOAErrorValue.Position = [654 15 191 22];
             app.TDOAErrorValue.Text = '';
 
+            % Create EntertheSoundSourceCoordinatesLabel
+            app.EntertheSoundSourceCoordinatesLabel = uilabel(app.SimulateTab);
+            app.EntertheSoundSourceCoordinatesLabel.FontWeight = 'bold';
+            app.EntertheSoundSourceCoordinatesLabel.Position = [25 413 220 22];
+            app.EntertheSoundSourceCoordinatesLabel.Text = 'Enter the Sound Source Coordinates:';
+
             % Create EditTab
             app.EditTab = uitab(app.TabGroup);
             app.EditTab.Title = 'Edit';
@@ -445,7 +452,7 @@ classdef GUI < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = app1
+        function app = GUI
 
             % Create UIFigure and components
             createComponents(app)
