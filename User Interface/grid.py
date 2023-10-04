@@ -1,6 +1,14 @@
 import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import subprocess
+import signal_acquisition
+import gcc_phat
+import synchronization
+import triangulation
+import time_delay_estimation
+
+c = 343
 
 def plot_empty_grid():
     fig, ax = plt.subplots()
@@ -55,6 +63,18 @@ def main():
             try:
                 x = 0.23
                 y = 0.46
+                
+                # subprocess.run("bash main.sh", shell=True)
+                
+                signals,fs = signal_acquisition.acquire_signals(['recording_1.wav','recording_2.wav'])
+                [[delay1, delay2, delay3, delay4], [sig1, sig2, sig3, sig4]] = synchronization.synchronize(signals[0],signals[3],signals[1],signals[2],signals[0][:int(6*fs)],fs)
+                [tdoa12, tdoa13, tdoa14] = time_delay_estimation.tdoa(sig1, sig2, sig3, sig4)
+
+                position = triangulation.triangulate([0,0],[0.8,0],[0,0.5],[0.8,0.5],abs(tdoa12*c/fs),abs(tdoa13*c/fs),abs(tdoa14*c/fs))
+
+                x = position[0]
+                y = position[1]
+
 
                 if 0 <= x <= 0.8 and 0 <= y <= 0.5:
                     fig = plot_point(fig, x, y)
