@@ -26,10 +26,11 @@ def plot_calibration(fig):
 def main():
     fig = plot_empty_grid()
 
+
+
     layout = [
-        [sg.Text('Enter X and Y values:')],
-        [sg.Text('X:', size=(5, 1)), sg.InputText(key='x_input', size=(10, 1))],
-        [sg.Text('Y:', size=(5, 1)), sg.InputText(key='y_input', size=(10, 1))],
+        [sg.Text('X:', size=(5, 1)), sg.Text('0.23', size=(10, 1))],
+        [sg.Text('Y:', size=(5, 1)), sg.Text('0.46', size=(10, 1))],
         [sg.Button('Plot'), sg.Button('Exit')],
         [sg.Canvas(key='canvas')],
     ]
@@ -52,8 +53,8 @@ def main():
             break
         elif event == 'Plot':
             try:
-                x = float(values['x_input'])
-                y = float(values['y_input'])
+                x = 0.23
+                y = 0.46
 
                 if 0 <= x <= 0.8 and 0 <= y <= 0.5:
                     fig = plot_point(fig, x, y)
