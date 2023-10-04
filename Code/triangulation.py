@@ -1,10 +1,5 @@
-from numpy import sqrt
-from numpy import min
-from numpy import max
-from numpy import round
-from scipy.linalg import lstsq
-from scipy.optimize import curve_fit
-from scipy.optimize import Bounds
+from numpy import sqrt, min, max, round
+from scipy.linalg import lstsq, Bounds
 
 
 def triangulate(p1, p2, p3, p4, d12, d13, d14):
@@ -41,4 +36,3 @@ def objective_func(xdata, *p):
     d14 = sqrt((p1[0] - p[0]) ** 2 + (p1[1] - p[1]) ** 2) - sqrt((p4[0] - p[0]) ** 2 + (p4[1] - p[1]) ** 2)
     ydata = [d12, d13, d14]
     return ydata
-

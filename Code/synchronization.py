@@ -1,12 +1,12 @@
 from gcc_phat import gcc_phat
 
 
-def synchronize(sig1, sig2, sig3, sig4, refsig, fs=1, max_tdoa=None):
+def synchronize(sig1, sig2, sig3, sig4, refsig, fs=1, max_delay=None):
     refsig_len = len(refsig)
-    delay1 = gcc_phat(sig1, refsig, fs, max_tdoa)[0]
-    delay2 = gcc_phat(sig2, refsig, fs, max_tdoa)[0]
-    delay3 = gcc_phat(sig3, refsig, fs, max_tdoa)[0]
-    delay4 = gcc_phat(sig4, refsig, fs, max_tdoa)[0]
+    delay1 = gcc_phat(sig1, refsig, fs, max_delay)[0]
+    delay2 = gcc_phat(sig2, refsig, fs, max_delay)[0]
+    delay3 = gcc_phat(sig3, refsig, fs, max_delay)[0]
+    delay4 = gcc_phat(sig4, refsig, fs, max_delay)[0]
     sync_sig1 = sig1[int(delay1 * fs) + refsig_len:]
     sync_sig2 = sig2[int(delay2 * fs) + refsig_len:]
     sync_sig3 = sig3[int(delay3 * fs) + refsig_len:]

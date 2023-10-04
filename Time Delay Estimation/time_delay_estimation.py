@@ -1,9 +1,4 @@
-from numpy import sqrt
-from numpy import linspace
-from numpy import cos
-from numpy import pi
-from numpy import concatenate
-from numpy import zeros
+from numpy import sqrt, linspace, cos, pi, concatenate, zeros
 from gcc_phat import gcc_phat
 
 
