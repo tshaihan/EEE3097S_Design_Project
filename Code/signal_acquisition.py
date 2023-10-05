@@ -50,12 +50,14 @@ def acquire_signals(files):
         signals[2 * i] = sig[:, 0]
         signals[2 * i + 1] = sig[:, 1]
 
+
     fc_low = 200
-    fc_high = 20000
+    fc_high = 15000
     order = 2
     clip_size = 1
-    threshold = 0.1
+    threshold = 0.2
 
     signals = process_signals(signals, fs, fc_low, fc_high, order, clip_size, threshold)
+
 
     return signals, fs
