@@ -64,13 +64,13 @@ def main():
                 x = 0.23
                 y = 0.46
                 
-                # subprocess.run("bash main.sh", shell=True)
+                subprocess.run("bash main.sh", shell=True)
                 
                 signals,fs = signal_acquisition.acquire_signals(['recording_1.wav','recording_2.wav'])
-                [[delay1, delay2, delay3, delay4], [sig1, sig2, sig3, sig4]] = synchronization.synchronize(signals[0],signals[3],signals[1],signals[2],signals[0][:int(6*fs)],fs)
+                [[delay1, delay2, delay3, delay4], [sig1, sig2, sig3, sig4]] = synchronization.synchronize(signals[0],signals[1],signals[2],signals[3],signals[0][:int(5*fs)],fs)
                 [tdoa12, tdoa13, tdoa14] = time_delay_estimation.tdoa(sig1, sig2, sig3, sig4)
 
-                position = triangulation.triangulate([0,0],[0.8,0],[0,0.5],[0.8,0.5],abs(tdoa12*c/fs),abs(tdoa13*c/fs),abs(tdoa14*c/fs))
+                position = triangulation.triangulate([0,0],[0,0.5],[0.8,0.5],[0.8,0],tdoa12*c/fs,tdoa13*c/fs,tdoa14*c/fs)
 
                 x = position[0]
                 y = position[1]
