@@ -1,8 +1,13 @@
-from gcc_phat import gcc_phat
+import numpy as np
+from scipy.signal import correlate, correlation_lags
 
 
-def tdoa(sig1, sig2, sig3, sig4, fs=1, max_tdoa=None):
-    tdoa12 = gcc_phat(sig1, sig2, fs, max_tdoa)[0]
-    tdoa13 = gcc_phat(sig1, sig3, fs, max_tdoa)[0]
-    tdoa14 = gcc_phat(sig1, sig4, fs, max_tdoa)[0]
-    return [tdoa12, tdoa13, tdoa14]
+def time_delays(signals, fs=1):
+    cross_correlations = np.empty_like(signals[1:])
+    lags = np.empty_like(signals[1:])
+    delays = np.zeros(len(signals)-1)
+    for i in range(len(signals)-1):
+        cross_correlations[i] = correlate(signals[0], signals[i+1], mode='same')
+        lags[i] = np.array(correlation_lags(len(signals[0]), len(signals[i+1]),  mode='same'), dtype='float') / fs
+        delays[i] = lags[i][np.argmax(cross_correlations[i])]
+    return delays, cross_correlations, lags
