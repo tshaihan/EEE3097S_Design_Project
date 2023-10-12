@@ -3,17 +3,18 @@ from scipy.linalg import lstsq
 from scipy.optimize import curve_fit, Bounds
 
 
+# Triangulates a 2D position using Least Squares Estimation
 def triangulate(p1, p2, p3, p4, d12, d13, d14):
-    p0 = linear_lsqr(p1, p2, p3, p4, d12, d13, d14)[0][:2]
+    p0 = linear_lse(p1, p2, p3, p4, d12, d13, d14)[0][:2]
     lb = np.array([np.min([p1[0], p2[0], p3[0], p4[0]]), np.min([p1[1], p2[1], p3[1], p4[1]])]) - 1
     ub = np.array([np.max([p1[0], p2[0], p3[0], p4[0]]), np.max([p1[1], p2[1], p3[1], p4[1]])]) + 1
     p0 = np.array([np.max([p0[0], lb[0]]), np.max([p0[1], lb[1]])])
     p0 = np.array([np.min([p0[0], ub[0]]), np.min([p0[1], ub[1]])])
-    p = nonlinear_lsqr(p0, p1, p2, p3, p4, d12, d13, d14, lb, ub)
-    return p
+    p = nonlinear_lse(p0, p1, p2, p3, p4, d12, d13, d14, lb, ub)
+    return p, p0
 
 
-def linear_lsqr(p1, p2, p3, p4, d12, d13, d14):
+def linear_lse(p1, p2, p3, p4, d12, d13, d14):
     a = np.array([[p1[0] - p2[0], p1[1] - p2[1], d12],
                   [p1[0] - p3[0], p1[1] - p3[1], d13],
                   [p1[0] - p4[0], p1[1] - p4[1], d14]])
@@ -24,9 +25,9 @@ def linear_lsqr(p1, p2, p3, p4, d12, d13, d14):
     return p
 
 
-def nonlinear_lsqr(p0, p1, p2, p3, p4, d12, d13, d14, lb, ub):
-    xdata = [p1, p2, p3, p4]
-    ydata = [d12, d13, d14]
+def nonlinear_lse(p0, p1, p2, p3, p4, d12, d13, d14, lb, ub):
+    xdata = np.array([p1, p2, p3, p4])
+    ydata = np.array([d12, d13, d14])
     bounds = Bounds(lb, ub)
     p = curve_fit(objective_func, xdata, ydata, p0, bounds=bounds, method='trf')[0]
     return p

@@ -1,6 +1,6 @@
 import numpy as np
 import signal_acquisition
-import synchronization
+import synchronisation
 import time_delay_estimation
 import triangulation
 import matplotlib.pyplot as plt
@@ -12,7 +12,6 @@ def plot_signals(t, signals, xlabel='time (s)', ylabel='amplitude'):
     fig.supylabel(ylabel)
     for i in range(len(signals)):
         ax[i].plot(t, signals[i])
-        ax[i].grid(True, 'both')
     plt.show()
     return
 
@@ -20,20 +19,23 @@ def plot_signals(t, signals, xlabel='time (s)', ylabel='amplitude'):
 def main():
     c = 343
 
-    signals, ref_signals, fs = signal_acquisition.acquire_signals(['recording_1.wav', 'recording_2.wav'])
+    src_signals, ref_signals, fs, raw_signals, raw_fs = signal_acquisition.acquire_signals(['recording_1.wav', 'recording_2.wav'])
 
-    t = np.linspace(0, len(signals[0]) / fs, len(signals[0]))
-    plot_signals(t, signals)
+    t = np.linspace(0, len(src_signals[0]) / fs, len(src_signals[0]))
+    plot_signals(t, src_signals)
     plot_signals(t, ref_signals)
 
-    signals, delays, cross_correlations, lags = synchronization.synchronize(signals, ref_signals, fs)
-    plot_signals(t, signals)
-
-    delays, cross_correlations, lags = time_delay_estimation.time_delays(signals, fs)
+    src_signals, delays, cross_correlations, lags = synchronisation.synchronise(src_signals, ref_signals, fs)
+    plot_signals(t, src_signals)
     plot_signals(lags[0], cross_correlations, 'time delays (s)')
+    print(delays)
+
+    delays, cross_correlations, lags = time_delay_estimation.tdoa(src_signals, fs)
+    plot_signals(lags[0], cross_correlations, 'time delays (s)')
+    print(delays)
 
     d12, d13, d14 = delays * c
-    position = triangulation.triangulate([0, 0], [0, 0.5], [0.8, 0.5], [0.8, 0], d12, d13, d14)
+    position, p0 = triangulation.triangulate([0, 0], [0, 0.5], [0.8, 0.5], [0.8, 0], d12, d13, d14)
     print(position)
 
 
