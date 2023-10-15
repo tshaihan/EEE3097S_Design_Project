@@ -40,7 +40,7 @@ def reset_grid(fig):
 # Creates plots of acquired audio signals
 def signal_acquisition_plots(raw_signals, processed_signals, t):
     fig, ax = plt.subplots(4, 2)
-    fig.suptitle('Raw and Processed Audio Signals Produced')
+    fig.suptitle('Raw and Processed Audio Signals Acquired')
     fig.supxlabel('Time (s)')
     fig.supylabel('Amplitude')
     ax[0, 0].set_title('Raw Signals')
@@ -69,7 +69,7 @@ def signal_acquisition_plots(raw_signals, processed_signals, t):
 # Creates plots of GCC-PHAT applied to the calibration signals
 def synchronisation_plots(cross_correlations, lags):
     fig, ax = plt.subplots(4)
-    fig.suptitle('GCC-PHAT of the Processed Audio Signals with respect to the Calibration Signal from Mic 1')
+    fig.suptitle('GCC-PHAT of the Audio Signals with respect to the Calibration Signal from Mic 1')
     fig.supxlabel('Time Lags (s)')
     fig.supylabel('Amplitude')
     for i in range(4):
@@ -94,7 +94,7 @@ def synchronisation_plots(cross_correlations, lags):
 # Creates plots of GCC-PHAT applied to the source signals
 def time_delay_estimation_plots(cross_correlations, lags):
     fig, ax = plt.subplots(4)
-    fig.suptitle('GCC-PHAT of the Processed Audio Signals with respect to the Source Signal from Mic 1')
+    fig.suptitle('GCC-PHAT of the Audio Signals with respect to the Source Signal from Mic 1')
     fig.supxlabel('Time Lags (s)')
     fig.supylabel('Amplitude')
     for i in range(4):
@@ -168,7 +168,7 @@ def main():
             window['msg'].update(value='Processing Signals')
             window.refresh()
             raw_signals, processed_signals, cal_signals, src_signals, fs = acquire_signals(
-                ['(0.4,0.25)_1.wav', '(0.4,0.25)_2.wav'])
+                ['Recordings/(0.4,0)_1.wav', 'Recordings/(0.4,0)_2.wav'])
             t = np.linspace(0, len(raw_signals[0]) / fs, len(raw_signals[0]))
 
             # Determines synchronisation delays relative to the calibration signal of Mic 1

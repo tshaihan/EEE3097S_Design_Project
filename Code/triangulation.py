@@ -14,7 +14,7 @@ def triangulate(p1, p2, p3, p4, tdoa12, tdoa13, tdoa14, c):
     p0 = linear_lse(p1, p2, p3, p4, d12, d13, d14)[:2]
 
     # Sets the bounds of the non-linear LSE solution
-    lb = np.asarray([np.min([p1[0], p2[0], p3[0], p4[0]]), np.min([p1[1], p2[1], p3[1], p4[1]])]) + 0.001
+    lb = np.asarray([np.min([p1[0], p2[0], p3[0], p4[0]]), np.min([p1[1], p2[1], p3[1], p4[1]])]) - 0.001
     ub = np.asarray([np.max([p1[0], p2[0], p3[0], p4[0]]), np.max([p1[1], p2[1], p3[1], p4[1]])]) + 0.001
 
     # Ensures initial position estimate is within the bounds
