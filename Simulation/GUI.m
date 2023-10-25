@@ -105,7 +105,7 @@ classdef GUI < matlab.apps.AppBase
 
         % Button pushed function: FindSoundSourceButton
         function FindSoundSourceButtonPushed(app, event)
-            
+            app.TestSignalLabel.Text = "";
             x_s = app.XCoordinateEditField.Value;
             y_s = app.YCoordinateEditField.Value;
 

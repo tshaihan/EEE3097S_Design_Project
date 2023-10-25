@@ -162,13 +162,12 @@ def main():
             # Records Audio Signals
             window['msg'].update(value='Recording Signals')
             window.refresh()
-            # subprocess.run("bash main.sh", shell=True)
+            subprocess.run("bash main.sh", shell=True)
 
             # Extracts and processes signals
             window['msg'].update(value='Processing Signals')
             window.refresh()
-            raw_signals, processed_signals, cal_signals, src_signals, fs = acquire_signals(
-                ['Recordings/(0.4,0)_1.wav', 'Recordings/(0.4,0)_2.wav'])
+            raw_signals, processed_signals, cal_signals, src_signals, fs = acquire_signals(['recording_1.wav', 'recording_2.wav'])
             t = np.linspace(0, len(raw_signals[0]) / fs, len(raw_signals[0]))
 
             # Determines synchronisation delays relative to the calibration signal of Mic 1

@@ -42,7 +42,7 @@ def plot_signals(t, signals, title, row_labels, xlabel='Time (s)', ylabel='Ampli
 
 def main():
     raw_signals, processed_signals, cal_signals, src_signals, fs = acquire_signals(
-        ['Recordings/(0.4,0.4)_1.wav', 'Recordings/(0.4,0.4)_2.wav'])
+        ['recording_1.wav', 'recording_2.wav'])
 
     f_bands = np.asarray([[1000, 5000], [6000, 10000]])
     raw_snr = snr(raw_signals, fs, f_bands)
